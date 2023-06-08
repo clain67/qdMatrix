@@ -48,7 +48,7 @@ c=c/(real)4.6;
 c.disp();
 cout<<"---------------- +=, -=, *= with real-------"<<endl;
 
-
+// TODO
 cout<<"----- permutation row and col -------"<<endl;
 c.permuteRow(0,2);
 c.disp();
