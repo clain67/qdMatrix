@@ -17,7 +17,7 @@ qdVec(const unsigned int s)
 {
 this->_size=s;
 _vec= new _T[_size];
-for(unsigned int k=0;k<_size;k++) _vec[k]=0.;
+for(unsigned int k=0;k<_size;k++) _vec[k]=(_T) 0.;
 };
 // ----------------- Destructor
 ~qdVec() {delete [] _vec;};
@@ -56,6 +56,12 @@ _size = rhs.size();
 if(this->_vec) delete [] _vec;
 this->_vec= new _T[_size];
 for(unsigned int k=0;k<_size;k++) _vec[k]=rhs[k];
+return *this;
+}
+
+qdVec<_T>& operator=(_T rhs)
+{
+for(unsigned int k=0;k<_size;k++) _vec[k]=rhs;
 return *this;
 }
 
@@ -106,7 +112,7 @@ return norm;
 _T norm2()
 {
 _T norm=0.;
-for(unsigned int i=0;i<_size;i++) {norm+=(_vec[i]*_vec[i]);};
+for(unsigned int i=0;i<_size;i++) norm+=(_vec[i]*_vec[i]);
 return sqrt(norm);
 }
 
@@ -136,7 +142,7 @@ void set(const unsigned int i, _T val){if(i<_size) _vec[i]=val;}
 
 /*--------------------- non member function ------*/
 template <class _T>
-qdVec<_T> operator+(qdVec<_T>& lhs,qdVec<_T>& rhs)
+qdVec<_T> operator+(qdVec<_T> lhs,qdVec<_T> rhs)
 {
 assert(rhs.size()==lhs.size());
 qdVec<_T> result(lhs.size());
@@ -145,7 +151,7 @@ return result;
 };
 
 template <class _T>
-qdVec<_T> operator-(qdVec<_T>& lhs,qdVec<_T>& rhs)
+qdVec<_T> operator-(qdVec<_T> lhs,qdVec<_T> rhs)
 {
 assert(rhs.size()==lhs.size());
 qdVec<_T> result(lhs.size());
@@ -167,5 +173,29 @@ qdVec<_T> operator*(qdVec<_T>& lhs,_T a)
 qdVec<_T> result(lhs.size());
 for (unsigned int k=0; k<lhs.size(); k++) result[k] = lhs[k]*a;
 return result;
+};
+
+template <class _T>
+_T norm1(qdVec<_T> v)
+{
+_T norm=0.;
+for(unsigned int i=0;i<v.size();i++) norm+=Abs(v[i]);
+return norm;
+};
+
+template <class _T>
+_T norm2(qdVec<_T> v)
+{
+_T norm=0.;
+for(unsigned int i=0;i<v.size();i++) norm+=(v[i]*v[i]);
+return sqrt(norm);
+};
+
+template <class _T>
+_T norminf(qdVec<_T> v)
+{
+_T norm=0.;
+for(unsigned int i=0;i<v.size();i++) norm=Max(Abs(v[i]),norm);
+return norm;
 };
 #endif

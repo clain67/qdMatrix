@@ -162,6 +162,30 @@ qdMat<_T>& permuteCol(unsigned int j1, unsigned int j2)
     return *this;
     }
 
+qdMat<_T> extractRow(unsigned int i1,unsigned int i2)
+    {
+    qdMat<_T> B;
+    i2=Min(i2,_row-1);
+    assert(i1<_row and i1<=i2);
+    B.resize(i2-i1+1,_col);
+    for(unsigned int i=i1;i<=i2;i++)
+        for(unsigned int j=0;j<_col;j++)
+            B(i-i1,j)=_mat[i*_col+j];
+    return B;
+    }
+
+qdMat<_T> extractCol(unsigned int j1,unsigned int j2)
+    {
+    qdMat<_T> B;
+    j2=Min(j2,_col-1);
+    assert(j1<_col and j1<=j2);
+    B.resize(_row,j2-j1+1);
+    for(unsigned int j=j1;j<=j2;j++)
+        for(unsigned int i=0;i<_row;i++)
+            B(i,j-j1)=_mat[i*_col+j];
+    return B;
+    }
+
 qdMat<_T>& random(const unsigned int r, const unsigned int c)
     {
     if(this->_mat) delete [] _mat;
@@ -480,7 +504,7 @@ qdMat<_T> kern(qdMat<_T> A)
     qdMat<_T> Q,R,S;
     A.transpose();
     QRHouseholder(A,Q,R);
-    S=extractCol(Q,Q.nbCol()-1,Q.nbRow()-1);
+    S=extractCol(Q,A.nbCol(),A.nbRow()-1);
     return S;
     }
 
